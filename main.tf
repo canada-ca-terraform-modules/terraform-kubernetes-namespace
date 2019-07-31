@@ -275,7 +275,7 @@ resource "kubernetes_service_account" "tiller" {
 # Tiller role bindings
 resource "kubernetes_cluster_role_binding" "tiller" {
   metadata {
-    name = "tiller-${var.helm_namespace}"
+    name = "tiller-${var.name}"
   }
 
   role_ref {
@@ -288,7 +288,7 @@ resource "kubernetes_cluster_role_binding" "tiller" {
   subject {
     kind = "ServiceAccount"
     name = "tiller"
-    namespace = "${var.helm_namespace}"
+    namespace = "${var.name}"
   }
 
   depends_on = [
@@ -298,7 +298,7 @@ resource "kubernetes_cluster_role_binding" "tiller" {
 
 resource "null_resource" "helm_init" {
   provisioner "local-exec" {
-    command = "helm init --service-account ${var.helm_service_account} --tiller-namespace ${var.helm_namespace} --wait"
+    command = "helm init --service-account ${var.helm_service_account} --tiller-namespace ${var.name} --wait"
   }
 
   depends_on = [
