@@ -166,12 +166,63 @@ resource "kubernetes_role" "namespace-admin" {
 
   # Read/write access to most resources in namespace
   rule {
-    api_groups = ["", "apps", "batch", "extensions", "rbac.authorization.k8s.io", "metrics.k8s.io", "networking.istio.io", "authentication.istio.io", "elasticsearch.k8s.elastic.co", "kibana.k8s.elastic.co"]
-    resources = ["nodes", "deployments", "deployments/scale", "daemonsets", "cronjobs", "events", "jobs", "replicasets", "replicasets/scale", "replicationcontrollers", "secrets",
-                 "serviceaccounts", "services", "services/proxy", "statefulsets", "statefulsets/scale", "persistentvolumeclaims", "pods", "pods/attach", "pods/exec", "pods/log",
-                 "pods/portforward", "configmaps", "ingresses", "policies", "destinationrules", "gateways", "virtualservices", "elasticsearches", "kibanas",
-                 "roles", "rolebindings"]
-    verbs = ["get", "list", "watch", "create", "update", "patch", "delete", "edit", "exec"]
+    api_groups = [
+      "", 
+      "apps", 
+      "batch", 
+      "extensions", 
+      "rbac.authorization.k8s.io", 
+      "metrics.k8s.io", 
+      "networking.istio.io", 
+      "authentication.istio.io", 
+      "elasticsearch.k8s.elastic.co", 
+      "kibana.k8s.elastic.co"
+    ]
+    resources = [
+      "nodes", 
+      "deployments", 
+      "deployments/scale", 
+      "daemonsets", 
+      "cronjobs", 
+      "events", 
+      "jobs", 
+      "replicasets", 
+      "replicasets/scale", 
+      "replicationcontrollers", 
+      "secrets",
+      "serviceaccounts", 
+      "services", 
+      "services/proxy",
+      "statefulsets", 
+      "statefulsets/scale",
+      "persistentvolumeclaims", 
+      "pods", 
+      "pods/attach", 
+      "pods/exec", 
+      "pods/log",
+      "pods/portforward", 
+      "configmaps", 
+      "ingresses", 
+      "policies", 
+      "destinationrules", 
+      "gateways", 
+      "virtualservices", 
+      "elasticsearches", 
+      "kibanas",
+      "roles", 
+      "rolebindings"
+    ]
+    verbs = [
+      "get", 
+      "list", 
+      "watch", 
+      "create", 
+      "update", 
+      "patch", 
+      "delete", 
+      "edit", 
+      "exec"
+    ]
   }
 
   depends_on = [
@@ -242,9 +293,9 @@ resource "kubernetes_role_binding" "namespace-service-account-admins" {
   ]
 }
 
-resource "kubernetes_secret" "artifactory" {
+resource "kubernetes_secret" "secret_registry" {
   metadata {
-    name = "artifactory-prod"
+    name = "${var.kubernetes_secret}"
     namespace = "${var.name}"
   }
 

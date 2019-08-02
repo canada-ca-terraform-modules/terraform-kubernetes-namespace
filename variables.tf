@@ -49,3 +49,7 @@ variable "docker_email" {
 variable "docker_auth" {
   type = string
 }
+
+variable "kubernetes_secret" {
+  type = string
+}
