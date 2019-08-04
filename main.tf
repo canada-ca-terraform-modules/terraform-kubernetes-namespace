@@ -11,6 +11,8 @@ resource "null_resource" "dependency_getter" {
   }
 }
 
+# Dashboard
+
 resource "kubernetes_service_account" "dashboard" {
   metadata {
     name = "dashboard"
@@ -22,7 +24,6 @@ resource "kubernetes_service_account" "dashboard" {
   ]
 }
 
-# Namespace admin role bindings
 resource "kubernetes_cluster_role_binding" "dashboard-cluster-user" {
   metadata {
     name = "dashboard-${var.name}-cluster-user"
@@ -39,92 +40,6 @@ resource "kubernetes_cluster_role_binding" "dashboard-cluster-user" {
     kind = "ServiceAccount"
     name = "${kubernetes_service_account.dashboard.metadata.0.name}"
     namespace = "${kubernetes_service_account.dashboard.metadata.0.namespace}"
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
-resource "kubernetes_service_account" "octopus" {
-  metadata {
-    name = "octopus"
-    namespace = "${var.name}"
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
-# Namespace admin role bindings
-resource "kubernetes_cluster_role_binding" "octopus-user" {
-  metadata {
-    name = "cluster-user-octopus-${var.name}"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind = "ClusterRole"
-    name = "cluster-user"
-  }
-
-  subject {
-    kind = "ServiceAccount"
-    name = "${kubernetes_service_account.octopus.metadata.0.name}"
-    namespace = "${kubernetes_service_account.octopus.metadata.0.namespace}"
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
-# Namespace admin role bindings
-resource "kubernetes_role_binding" "namespace-admin-octopus" {
-  metadata {
-    name = "namespace-admin-octopus"
-    namespace = "${var.name}"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind = "Role"
-    name = "namespace-admin"
-  }
-
-  subject {
-    kind = "ServiceAccount"
-    name = "${kubernetes_service_account.octopus.metadata.0.name}"
-    namespace = "${kubernetes_service_account.octopus.metadata.0.namespace}"
-  }
-
-  subject {
-    kind = "ServiceAccount"
-    name = "octopus"
-    namespace = "ci"
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
-resource "kubernetes_cluster_role_binding" "octopus" {
-  metadata {
-    name = "octopus-${var.name}"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind = "ClusterRole"
-    name = "octopus"
-  }
-
-  subject {
-    kind = "ServiceAccount"
-    name = "ocotpus"
-    namespace = "${var.name}"
   }
 
   depends_on = [
@@ -150,7 +65,6 @@ resource "kubernetes_resource_quota" "service_quota" {
   ]
 }
 
-# Namespace admin role
 resource "kubernetes_role" "namespace-admin" {
   metadata {
     name = "namespace-admin"
@@ -167,60 +81,60 @@ resource "kubernetes_role" "namespace-admin" {
   # Read/write access to most resources in namespace
   rule {
     api_groups = [
-      "", 
-      "apps", 
-      "batch", 
-      "extensions", 
-      "rbac.authorization.k8s.io", 
-      "metrics.k8s.io", 
-      "networking.istio.io", 
-      "authentication.istio.io", 
-      "elasticsearch.k8s.elastic.co", 
+      "",
+      "apps",
+      "batch",
+      "extensions",
+      "rbac.authorization.k8s.io",
+      "metrics.k8s.io",
+      "networking.istio.io",
+      "authentication.istio.io",
+      "elasticsearch.k8s.elastic.co",
       "kibana.k8s.elastic.co"
     ]
     resources = [
-      "nodes", 
-      "deployments", 
-      "deployments/scale", 
-      "daemonsets", 
-      "cronjobs", 
-      "events", 
-      "jobs", 
-      "replicasets", 
-      "replicasets/scale", 
-      "replicationcontrollers", 
+      "nodes",
+      "deployments",
+      "deployments/scale",
+      "daemonsets",
+      "cronjobs",
+      "events",
+      "jobs",
+      "replicasets",
+      "replicasets/scale",
+      "replicationcontrollers",
       "secrets",
-      "serviceaccounts", 
-      "services", 
+      "serviceaccounts",
+      "services",
       "services/proxy",
-      "statefulsets", 
+      "statefulsets",
       "statefulsets/scale",
-      "persistentvolumeclaims", 
-      "pods", 
-      "pods/attach", 
-      "pods/exec", 
+      "persistentvolumeclaims",
+      "pods",
+      "pods/attach",
+      "pods/exec",
       "pods/log",
-      "pods/portforward", 
-      "configmaps", 
-      "ingresses", 
-      "policies", 
-      "destinationrules", 
-      "gateways", 
-      "virtualservices", 
-      "elasticsearches", 
+      "pods/portforward",
+      "configmaps",
+      "ingresses",
+      "policies",
+      "destinationrules",
+      "gateways",
+      "virtualservices",
+      "elasticsearches",
       "kibanas",
-      "roles", 
+      "roles",
       "rolebindings"
     ]
     verbs = [
-      "get", 
-      "list", 
-      "watch", 
-      "create", 
-      "update", 
-      "patch", 
-      "delete", 
-      "edit", 
+      "get",
+      "list",
+      "watch",
+      "create",
+      "update",
+      "patch",
+      "delete",
+      "edit",
       "exec"
     ]
   }
@@ -230,7 +144,6 @@ resource "kubernetes_role" "namespace-admin" {
   ]
 }
 
-# Namespace admin role bindings
 resource "kubernetes_role_binding" "namespace-admins" {
   metadata {
     name = "namespace-admins"
@@ -268,7 +181,6 @@ resource "kubernetes_role_binding" "namespace-admins" {
   ]
 }
 
-# Namespace admin role bindings
 resource "kubernetes_role_binding" "namespace-service-account-admins" {
   metadata {
     name = "namespace-service-account-admins"
@@ -293,7 +205,11 @@ resource "kubernetes_role_binding" "namespace-service-account-admins" {
   ]
 }
 
+# Secret
+
 resource "kubernetes_secret" "secret_registry" {
+  count = "${var.enable_kubernetes_secret ? 1 : 0}"
+
   metadata {
     name = "${var.kubernetes_secret}"
     namespace = "${var.name}"
@@ -312,6 +228,8 @@ resource "kubernetes_secret" "secret_registry" {
   type = "kubernetes.io/dockerconfigjson"
 }
 
+# Tiller
+
 resource "kubernetes_service_account" "tiller" {
   metadata {
     name = "tiller"
@@ -323,7 +241,6 @@ resource "kubernetes_service_account" "tiller" {
   ]
 }
 
-# Tiller role bindings
 resource "kubernetes_cluster_role_binding" "tiller" {
   metadata {
     name = "tiller-${var.name}"
@@ -357,7 +274,6 @@ resource "null_resource" "helm_init" {
   ]
 }
 
-# Tiller role
 resource "kubernetes_role" "tiller" {
   metadata {
     name = "tiller"
@@ -375,7 +291,6 @@ resource "kubernetes_role" "tiller" {
   ]
 }
 
-# Tiller role bindings
 resource "kubernetes_role_binding" "tiller" {
   metadata {
     name = "tiller"
@@ -400,7 +315,94 @@ resource "kubernetes_role_binding" "tiller" {
   ]
 }
 
-# Setup namespace logs
+# CI/CD
+
+resource "kubernetes_service_account" "ci" {
+  metadata {
+    name = "${var.ci_name}"
+    namespace = "${var.name}"
+  }
+
+  depends_on = [
+    "null_resource.dependency_getter",
+  ]
+}
+
+resource "kubernetes_cluster_role_binding" "ci-user" {
+  metadata {
+    name = "cluster-user-ci-${var.name}"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind = "ClusterRole"
+    name = "cluster-user"
+  }
+
+  subject {
+    kind = "ServiceAccount"
+    name = "${kubernetes_service_account.ci.metadata.0.name}"
+    namespace = "${kubernetes_service_account.ci.metadata.0.namespace}"
+  }
+
+  depends_on = [
+    "null_resource.dependency_getter",
+  ]
+}
+
+resource "kubernetes_role_binding" "namespace-admin-ci" {
+  metadata {
+    name = "namespace-admin-${var.ci_name}"
+    namespace = "${var.name}"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind = "Role"
+    name = "namespace-admin"
+  }
+
+  subject {
+    kind = "ServiceAccount"
+    name = "${kubernetes_service_account.ci.metadata.0.name}"
+    namespace = "${kubernetes_service_account.ci.metadata.0.namespace}"
+  }
+
+  subject {
+    kind = "ServiceAccount"
+    name = "${var.ci_name}"
+    namespace = "ci"
+  }
+
+  depends_on = [
+    "null_resource.dependency_getter",
+  ]
+}
+
+resource "kubernetes_cluster_role_binding" "ci" {
+  metadata {
+    name = "${var.ci_name}-${var.name}"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind = "ClusterRole"
+    name = "${var.ci_name}"
+  }
+
+  subject {
+    kind = "ServiceAccount"
+    name = "${var.ci_name}"
+    namespace = "${var.name}"
+  }
+
+  depends_on = [
+    "null_resource.dependency_getter",
+  ]
+}
+
+# Logging
+
 resource "kubernetes_config_map" "fluentd-config" {
   metadata {
     name = "fluentd-config"

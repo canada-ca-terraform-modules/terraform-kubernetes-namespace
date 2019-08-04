@@ -32,24 +32,39 @@ variable "dependencies" {
 
 variable "docker_repo" {
   type = string
+  default = "null"
 }
 
 variable "docker_username" {
   type = string
+  default = "null"
 }
 
 variable "docker_password" {
   type = string
+  default = "null"
 }
 
 variable "docker_email" {
   type = string
+  default = "null"
 }
 
 variable "docker_auth" {
   type = string
+  default = "null"
+}
+
+variable "enable_kubernetes_secret" {
+  type = string
+  default = "0"
 }
 
 variable "kubernetes_secret" {
+  type = string
+  default = "null"
+}
+
+variable "ci_name" {
   type = string
 }
