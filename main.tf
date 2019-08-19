@@ -47,6 +47,43 @@ resource "kubernetes_cluster_role_binding" "dashboard-cluster-user" {
   ]
 }
 
+resource "kubernetes_role_binding" "namespace-admins-dashboard-user" {
+  metadata {
+    name = "${var.name}-dashboard-user"
+    namespace = "kube-system"
+  }
+
+  role_ref {
+    api_group = "rbac.authorization.k8s.io"
+    kind = "Role"
+    name = "dashboard-user"
+  }
+
+  # Users
+  dynamic "subject" {
+    for_each = "${var.namespace_admins.users}"
+    content {
+      kind = "User"
+      name = "${subject.value}"
+      api_group = "rbac.authorization.k8s.io"
+    }
+  }
+
+  # Groups
+  dynamic "subject" {
+    for_each = "${var.namespace_admins.groups}"
+    content {
+      kind = "Group"
+      name = "${subject.value}"
+      api_group = "rbac.authorization.k8s.io"
+    }
+  }
+
+  depends_on = [
+    "null_resource.dependency_getter",
+  ]
+}
+
 resource "kubernetes_resource_quota" "service_quota" {
   metadata {
     name = "service-quota"
