@@ -1,4 +1,4 @@
-# Terraform Kubernetes AAD Pod Identity
+# Terraform Kubernetes Namespace
 
 ## Introduction
 
