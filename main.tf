@@ -127,7 +127,8 @@ resource "kubernetes_role" "namespace-admin" {
       "networking.istio.io",
       "authentication.istio.io",
       "elasticsearch.k8s.elastic.co",
-      "kibana.k8s.elastic.co"
+      "kibana.k8s.elastic.co",
+      "monitoring.coreos.com"
     ]
     resources = [
       "nodes",
@@ -161,7 +162,11 @@ resource "kubernetes_role" "namespace-admin" {
       "elasticsearches",
       "kibanas",
       "roles",
-      "rolebindings"
+      "rolebindings",
+      "prometheuses",
+      "prometheusrules",
+      "alertmanagers",
+      "servicemonitors"
     ]
     verbs = [
       "get",
