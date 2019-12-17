@@ -128,7 +128,8 @@ resource "kubernetes_role" "namespace-admin" {
       "authentication.istio.io",
       "elasticsearch.k8s.elastic.co",
       "kibana.k8s.elastic.co",
-      "monitoring.coreos.com"
+      "monitoring.coreos.com",
+      "networking.k8s.io"
     ]
     resources = [
       "nodes",
