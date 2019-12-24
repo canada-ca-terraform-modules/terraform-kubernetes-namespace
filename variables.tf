@@ -6,23 +6,23 @@ variable "name" {
 
 variable "namespace_admins" {
   type = object({
-    users = list(string)
+    users  = list(string)
     groups = list(string)
   })
 
   default = {
-    users = []
+    users  = []
     groups = []
   }
 }
 
 variable "allowed_loadbalancers" {
-  type = number
+  type    = number
   default = 0
 }
 
 variable "allowed_nodeports" {
-  type = number
+  type    = number
   default = 0
 }
 
@@ -31,37 +31,37 @@ variable "dependencies" {
 }
 
 variable "docker_repo" {
-  type = string
+  type    = string
   default = "null"
 }
 
 variable "docker_username" {
-  type = string
+  type    = string
   default = "null"
 }
 
 variable "docker_password" {
-  type = string
+  type    = string
   default = "null"
 }
 
 variable "docker_email" {
-  type = string
+  type    = string
   default = "null"
 }
 
 variable "docker_auth" {
-  type = string
+  type    = string
   default = "null"
 }
 
 variable "enable_kubernetes_secret" {
-  type = string
+  type    = string
   default = "0"
 }
 
 variable "kubernetes_secret" {
-  type = string
+  type    = string
   default = "null"
 }
 

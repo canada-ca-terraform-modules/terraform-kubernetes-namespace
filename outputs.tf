@@ -1,9 +1,9 @@
 output "helm_service_account" {
-    value = "${kubernetes_service_account.tiller.metadata.0.name}"
+  value = "${kubernetes_service_account.tiller.metadata.0.name}"
 }
 
 output "name" {
-    value = "${var.name}"
+  value = "${var.name}"
 }
 
 # Part of a hack for module-to-module dependencies.
