@@ -330,7 +330,7 @@ resource "kubernetes_role" "tiller" {
   }
 
   rule {
-    api_groups = ["", "extensions", "apps", "batch", "policy", "autoscaling", "rbac.authorization.k8s.io", "networking.k8s.io", "networking.istio.io", "authentication.istio.io"]
+    api_groups = ["", "extensions", "apps", "batch", "policy", "autoscaling", "rbac.authorization.k8s.io", "networking.k8s.io", "networking.istio.io", "authentication.istio.io", "elasticsearch.k8s.elastic.co", "kibana.k8s.elastic.co"]
     resources  = ["*"]
     verbs      = ["*"]
   }
