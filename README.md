@@ -80,5 +80,5 @@ module "namespace_xxxxx" {
 
 | Date     | Release    | Change                                                     |
 | -------- | ---------- | ---------------------------------------------------------- |
-| 20190729 | 20190729.1 | Improvements to documentation and formatting               |
-| 20190909 | 20190909.1 | 1st release                                                |
+| 20200123 | 1.0.0      | 1st release                                                |
+| 20200820 | 1.0.1      | Namespace admin RBAC udpates                               |
