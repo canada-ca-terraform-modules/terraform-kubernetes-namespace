@@ -117,7 +117,7 @@ resource "kubernetes_role" "namespace-admin" {
   # Read-only access to resource quotas
   rule {
     api_groups = [""]
-    resources  = ["resourcequotas"]
+    resources  = ["resourcequotas", "endpoints"]
     verbs      = ["list", "get", "watch"]
   }
 
@@ -126,8 +126,10 @@ resource "kubernetes_role" "namespace-admin" {
     api_groups = [
       "",
       "apps",
+      "autoscaling",
       "batch",
       "extensions",
+      "policy",
       "rbac.authorization.k8s.io",
       "metrics.k8s.io",
       "networking.istio.io",
@@ -160,6 +162,8 @@ resource "kubernetes_role" "namespace-admin" {
       "pods/exec",
       "pods/log",
       "pods/portforward",
+      "poddisruptionbudgets",
+      "horizontalpodautoscalers",
       "configmaps",
       "ingresses",
       "policies",
