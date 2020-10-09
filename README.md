@@ -78,3 +78,5 @@ module "namespace_xxxxx" {
 | -------- | ---------- | ---------------------------------------------------------- |
 | 20200123 | 1.0.0      | 1st release                                                |
 | 20200820 | 1.0.1      | Namespace admin RBAC udpates                               |
+| 20201009 | 2.0.1      | Updated module for Helm 3                                  |
+
