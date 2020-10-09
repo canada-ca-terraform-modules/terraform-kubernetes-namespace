@@ -281,93 +281,6 @@ resource "kubernetes_secret" "secret_registry" {
   type = "kubernetes.io/dockerconfigjson"
 }
 
-# Tiller
-
-resource "kubernetes_service_account" "tiller" {
-  metadata {
-    name      = "tiller"
-    namespace = "${var.name}"
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
-resource "kubernetes_cluster_role_binding" "tiller" {
-  metadata {
-    name = "tiller-${var.name}"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "ClusterRole"
-    name      = "tiller"
-  }
-
-  # Tiller
-  subject {
-    kind      = "ServiceAccount"
-    name      = "tiller"
-    namespace = "${var.name}"
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
-resource "null_resource" "helm_init" {
-  provisioner "local-exec" {
-    command = "helm init --service-account ${var.helm_service_account} --tiller-namespace ${var.name} --wait"
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
-resource "kubernetes_role" "tiller" {
-  metadata {
-    name      = "tiller"
-    namespace = "${var.name}"
-  }
-
-  rule {
-    api_groups = ["", "extensions", "apps", "batch", "policy", "autoscaling", "rbac.authorization.k8s.io", "networking.k8s.io", "networking.istio.io", "authentication.istio.io", "elasticsearch.k8s.elastic.co", "kibana.k8s.elastic.co"]
-    resources  = ["*"]
-    verbs      = ["*"]
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
-resource "kubernetes_role_binding" "tiller" {
-  metadata {
-    name      = "tiller"
-    namespace = "${var.name}"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "Role"
-    name      = "tiller"
-  }
-
-  # Tiller
-  subject {
-    kind      = "ServiceAccount"
-    name      = "${kubernetes_service_account.tiller.metadata.0.name}"
-    namespace = "${kubernetes_service_account.tiller.metadata.0.namespace}"
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
 # CI/CD
 
 resource "kubernetes_service_account" "ci" {
@@ -474,6 +387,6 @@ resource "null_resource" "dependency_setter" {
   # https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607
   # List resource(s) that will be constructed last within the module.
   depends_on = [
-    "kubernetes_role.tiller"
+    
   ]
 }

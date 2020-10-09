@@ -1,5 +1,3 @@
-variable "helm_service_account" {}
-
 variable "name" {
   type = string
 }

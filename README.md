@@ -30,7 +30,7 @@ resource "kubernetes_namespace" "xxxxx" {
 }
 
 module "namespace_xxxxx" {
-  source = "github.com/canada-ca-terraform-modules/terraform-kubernetes-namespace?ref=20190909.1"
+  source = "https://gitlab.k8s.cloud.statcan.ca/cloudnative/terraform/modules/terraform-kubernetes-namespace?ref=v2.0.0"
 
   name = "${kubernetes_namespace.xxxxx.metadata.0.name}"
   namespace_admins = {
@@ -39,9 +39,6 @@ module "namespace_xxxxx" {
       # Enter Active Directory Group
     ]
   }
-
-  # ServiceAccount
-  helm_service_account = "tiller"
 
   # CICD
   ci_name = "argo"
@@ -65,7 +62,6 @@ module "namespace_xxxxx" {
 | ------------------------ | ------- | -------- | ------------------------------------------------------- |
 | name                     | string  | yes      | The namespace this module will run against              |
 | namespace_admins         | string  | yes      | The user / group to authorize against                   |
-| helm_service_account     | string  | yes      | The service account to use for Helm                     |
 | ci_Name                  | string  | yes      | The service account to use for CI                       |
 | enable_kubernetes_secret | boolean | yes      | Whether to enable a custom image pull secret            |
 | kubernetes_secret        | string  | yes      | The name of the secret that will be created             |
