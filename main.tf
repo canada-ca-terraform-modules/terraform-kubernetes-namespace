@@ -137,7 +137,8 @@ resource "kubernetes_role" "namespace-admin" {
       "elasticsearch.k8s.elastic.co",
       "kibana.k8s.elastic.co",
       "monitoring.coreos.com",
-      "networking.k8s.io"
+      "networking.k8s.io",
+      "cert-manager.io"
     ]
     resources = [
       "nodes",
@@ -177,7 +178,9 @@ resource "kubernetes_role" "namespace-admin" {
       "prometheuses",
       "prometheusrules",
       "alertmanagers",
-      "servicemonitors"
+      "servicemonitors",
+      "certificates",
+      "issuers"
     ]
     verbs = [
       "get",
