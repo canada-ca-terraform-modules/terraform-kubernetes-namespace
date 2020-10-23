@@ -17,79 +17,6 @@ resource "null_resource" "dependency_getter" {
   }
 }
 
-# Dashboard
-
-resource "kubernetes_service_account" "dashboard" {
-  metadata {
-    name      = "dashboard"
-    namespace = "${var.name}"
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
-resource "kubernetes_cluster_role_binding" "dashboard-cluster-user" {
-  metadata {
-    name = "dashboard-${var.name}-cluster-user"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "ClusterRole"
-    name      = "cluster-user"
-  }
-
-  # Dashboard
-  subject {
-    kind      = "ServiceAccount"
-    name      = "${kubernetes_service_account.dashboard.metadata.0.name}"
-    namespace = "${kubernetes_service_account.dashboard.metadata.0.namespace}"
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
-resource "kubernetes_role_binding" "namespace-admins-dashboard-user" {
-  metadata {
-    name      = "${var.name}-dashboard-user"
-    namespace = "kube-system"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "Role"
-    name      = "dashboard-user"
-  }
-
-  # Users
-  dynamic "subject" {
-    for_each = "${var.namespace_admins.users}"
-    content {
-      kind      = "User"
-      name      = "${subject.value}"
-      api_group = "rbac.authorization.k8s.io"
-    }
-  }
-
-  # Groups
-  dynamic "subject" {
-    for_each = "${var.namespace_admins.groups}"
-    content {
-      kind      = "Group"
-      name      = "${subject.value}"
-      api_group = "rbac.authorization.k8s.io"
-    }
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
 resource "kubernetes_resource_quota" "service_quota" {
   metadata {
     name      = "service-quota"
@@ -390,6 +317,6 @@ resource "null_resource" "dependency_setter" {
   # https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607
   # List resource(s) that will be constructed last within the module.
   depends_on = [
-    
+
   ]
 }
