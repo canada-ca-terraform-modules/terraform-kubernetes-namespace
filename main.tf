@@ -164,30 +164,6 @@ resource "kubernetes_role_binding" "namespace-admins" {
   ]
 }
 
-resource "kubernetes_role_binding" "namespace-service-account-admins" {
-  metadata {
-    name      = "namespace-service-account-admins"
-    namespace = "${var.name}"
-  }
-
-  role_ref {
-    api_group = "rbac.authorization.k8s.io"
-    kind      = "Role"
-    name      = "namespace-admin"
-  }
-
-  # Dashboard
-  subject {
-    kind      = "ServiceAccount"
-    name      = "${kubernetes_service_account.dashboard.metadata.0.name}"
-    namespace = "${kubernetes_service_account.dashboard.metadata.0.namespace}"
-  }
-
-  depends_on = [
-    "null_resource.dependency_getter",
-  ]
-}
-
 # Secret
 
 resource "kubernetes_secret" "secret_registry" {
