@@ -80,6 +80,7 @@ resource "kubernetes_role" "namespace-admin" {
       "replicationcontrollers",
       "secrets",
       "serviceaccounts",
+      "serviceentries",
       "services",
       "services/proxy",
       "statefulsets",
