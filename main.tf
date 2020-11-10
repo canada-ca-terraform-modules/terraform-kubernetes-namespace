@@ -283,7 +283,7 @@ resource "kubernetes_config_map" "fluentd-config" {
   }
 
   data = {
-    "fluent.conf" = file("${path.module}/config/fluent.conf")
+    "fluent.conf" = var.fluentd_config
   }
 }
 

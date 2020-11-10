@@ -66,3 +66,12 @@ variable "kubernetes_secret" {
 variable "ci_name" {
   type = string
 }
+
+variable "fluentd_config" {
+  type = string
+  default = <<EOF
+<match **>
+  @type default
+</match>
+EOF
+}
