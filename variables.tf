@@ -25,7 +25,7 @@ variable "allowed_nodeports" {
 }
 
 variable "dependencies" {
-  type = "list"
+  type = list
 }
 
 variable "docker_repo" {

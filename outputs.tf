@@ -1,5 +1,5 @@
 output "name" {
-  value = "${var.name}"
+  value = var.name
 }
 
 # Part of a hack for module-to-module dependencies.

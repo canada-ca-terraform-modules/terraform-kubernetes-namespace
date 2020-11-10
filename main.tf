@@ -7,7 +7,7 @@
 # module:
 resource "null_resource" "dependency_getter" {
   triggers = {
-    my_dependencies = "${join(",", var.dependencies)}"
+    my_dependencies = join(",", var.dependencies)
   }
 
   lifecycle {
@@ -20,25 +20,25 @@ resource "null_resource" "dependency_getter" {
 resource "kubernetes_resource_quota" "service_quota" {
   metadata {
     name      = "service-quota"
-    namespace = "${var.name}"
+    namespace = var.name
   }
 
   spec {
     hard = {
-      "services.loadbalancers" = "${var.allowed_loadbalancers}"
-      "services.nodeports"     = "${var.allowed_nodeports}"
+      "services.loadbalancers" = var.allowed_loadbalancers
+      "services.nodeports"     = var.allowed_nodeports
     }
   }
 
   depends_on = [
-    "null_resource.dependency_getter",
+    null_resource.dependency_getter,
   ]
 }
 
 resource "kubernetes_role" "namespace-admin" {
   metadata {
     name      = "namespace-admin"
-    namespace = "${var.name}"
+    namespace = var.name
   }
 
   # Read-only access to resource quotas
@@ -124,14 +124,14 @@ resource "kubernetes_role" "namespace-admin" {
   }
 
   depends_on = [
-    "null_resource.dependency_getter",
+    null_resource.dependency_getter,
   ]
 }
 
 resource "kubernetes_role_binding" "namespace-admins" {
   metadata {
     name      = "namespace-admins"
-    namespace = "${var.name}"
+    namespace = var.name
   }
 
   role_ref {
@@ -142,47 +142,47 @@ resource "kubernetes_role_binding" "namespace-admins" {
 
   # Users
   dynamic "subject" {
-    for_each = "${var.namespace_admins.users}"
+    for_each = var.namespace_admins.users
     content {
       kind      = "User"
-      name      = "${subject.value}"
+      name      = subject.value
       api_group = "rbac.authorization.k8s.io"
     }
   }
 
   # Groups
   dynamic "subject" {
-    for_each = "${var.namespace_admins.groups}"
+    for_each = var.namespace_admins.groups
     content {
       kind      = "Group"
-      name      = "${subject.value}"
+      name      = subject.value
       api_group = "rbac.authorization.k8s.io"
     }
   }
 
   depends_on = [
-    "null_resource.dependency_getter",
+    null_resource.dependency_getter,
   ]
 }
 
 # Secret
 
 resource "kubernetes_secret" "secret_registry" {
-  count = "${var.enable_kubernetes_secret ? 1 : 0}"
+  count = var.enable_kubernetes_secret ? 1 : 0
 
   metadata {
-    name      = "${var.kubernetes_secret}"
-    namespace = "${var.name}"
+    name      = var.kubernetes_secret
+    namespace = var.name
   }
 
   data = {
-    ".dockerconfigjson" = "${templatefile("${path.module}/templates/dockerconfigjson.tpl", {
-      repo     = "${var.docker_repo}",
-      username = "${var.docker_username}",
-      password = "${var.docker_password}",
-      email    = "${var.docker_email}",
-      auth     = "${var.docker_auth}",
-    })}"
+    ".dockerconfigjson" = templatefile("${path.module}/templates/dockerconfigjson.tpl", {
+      repo     = var.docker_repo,
+      username = var.docker_username,
+      password = var.docker_password,
+      email    = var.docker_email,
+      auth     = var.docker_auth,
+    })
   }
 
   type = "kubernetes.io/dockerconfigjson"
@@ -192,12 +192,12 @@ resource "kubernetes_secret" "secret_registry" {
 
 resource "kubernetes_service_account" "ci" {
   metadata {
-    name      = "${var.ci_name}"
-    namespace = "${var.name}"
+    name      = var.ci_name
+    namespace = var.name
   }
 
   depends_on = [
-    "null_resource.dependency_getter",
+    null_resource.dependency_getter,
   ]
 }
 
@@ -214,19 +214,19 @@ resource "kubernetes_cluster_role_binding" "ci-user" {
 
   subject {
     kind      = "ServiceAccount"
-    name      = "${kubernetes_service_account.ci.metadata.0.name}"
-    namespace = "${kubernetes_service_account.ci.metadata.0.namespace}"
+    name      = kubernetes_service_account.ci.metadata.0.name
+    namespace = kubernetes_service_account.ci.metadata.0.namespace
   }
 
   depends_on = [
-    "null_resource.dependency_getter",
+    null_resource.dependency_getter,
   ]
 }
 
 resource "kubernetes_role_binding" "namespace-admin-ci" {
   metadata {
     name      = "namespace-admin-${var.ci_name}"
-    namespace = "${var.name}"
+    namespace = var.name
   }
 
   role_ref {
@@ -237,18 +237,18 @@ resource "kubernetes_role_binding" "namespace-admin-ci" {
 
   subject {
     kind      = "ServiceAccount"
-    name      = "${kubernetes_service_account.ci.metadata.0.name}"
-    namespace = "${kubernetes_service_account.ci.metadata.0.namespace}"
+    name      = kubernetes_service_account.ci.metadata.0.name
+    namespace = kubernetes_service_account.ci.metadata.0.namespace
   }
 
   subject {
     kind      = "ServiceAccount"
-    name      = "${var.ci_name}"
+    name      = var.ci_name
     namespace = "ci"
   }
 
   depends_on = [
-    "null_resource.dependency_getter",
+    null_resource.dependency_getter,
   ]
 }
 
@@ -260,17 +260,17 @@ resource "kubernetes_cluster_role_binding" "ci" {
   role_ref {
     api_group = "rbac.authorization.k8s.io"
     kind      = "ClusterRole"
-    name      = "${var.ci_name}"
+    name      = var.ci_name
   }
 
   subject {
     kind      = "ServiceAccount"
-    name      = "${var.ci_name}"
-    namespace = "${var.name}"
+    name      = var.ci_name
+    namespace = var.name
   }
 
   depends_on = [
-    "null_resource.dependency_getter",
+    null_resource.dependency_getter,
   ]
 }
 
@@ -279,11 +279,11 @@ resource "kubernetes_cluster_role_binding" "ci" {
 resource "kubernetes_config_map" "fluentd-config" {
   metadata {
     name      = "fluentd-config"
-    namespace = "${var.name}"
+    namespace = var.name
   }
 
   data = {
-    "fluent.conf" = "${file("${path.module}/config/fluent.conf")}"
+    "fluent.conf" = file("${path.module}/config/fluent.conf")
   }
 }
 
