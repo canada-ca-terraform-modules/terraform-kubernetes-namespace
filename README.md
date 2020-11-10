@@ -81,3 +81,4 @@ module "namespace_xxxxx" {
 | 20201009 | 2.0.0      | Updated module for Helm 3                                  |
 | 20201022 | 2.1.0      | Removed additional dashboard configuration                 |
 | 20201030 | 2.1.1      | Granted access to the ServiceEntry resource                |
+| 20201110 | 2.2.0      | Support customization of fluentd config                    |
