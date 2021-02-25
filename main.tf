@@ -196,6 +196,8 @@ resource "kubernetes_service_account" "ci" {
     namespace = var.name
   }
 
+  automount_service_account_token = false
+
   depends_on = [
     null_resource.dependency_getter,
   ]
