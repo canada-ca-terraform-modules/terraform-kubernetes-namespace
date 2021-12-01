@@ -123,6 +123,36 @@ resource "kubernetes_role" "namespace-admin" {
     ]
   }
 
+  # Read/write access for Argo
+  rule {
+    api_groups = [
+      "argoproj.io"
+    ]
+    resources = [
+      "workflows",
+      "workflows/finalizers",
+      "workfloweventbindings",
+      "workfloweventbindings/finalizers",
+      "workflowtemplates",
+      "workflowtemplates/finalizers",
+      "cronworkflows",
+      "cronworkflows/finalizers",
+      "clusterworkflowtemplates",
+      "clusterworkflowtemplates/finalizers",
+    ]
+    verbs = [
+      "get",
+      "list",
+      "watch",
+      "create",
+      "update",
+      "patch",
+      "delete",
+      "edit",
+      "exec"
+    ]
+  }
+
   depends_on = [
     null_resource.dependency_getter,
   ]

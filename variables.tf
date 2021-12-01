@@ -25,7 +25,7 @@ variable "allowed_nodeports" {
 }
 
 variable "dependencies" {
-  type = list
+  type = list(any)
 }
 
 variable "docker_repo" {
@@ -68,7 +68,7 @@ variable "ci_name" {
 }
 
 variable "fluentd_config" {
-  type = string
+  type    = string
   default = <<EOF
 <match **>
   @type default
