@@ -59,8 +59,6 @@ resource "kubernetes_role" "namespace-admin" {
       "policy",
       "rbac.authorization.k8s.io",
       "metrics.k8s.io",
-      "networking.istio.io",
-      "authentication.istio.io",
       "elasticsearch.k8s.elastic.co",
       "kibana.k8s.elastic.co",
       "monitoring.coreos.com",
@@ -80,7 +78,6 @@ resource "kubernetes_role" "namespace-admin" {
       "replicationcontrollers",
       "secrets",
       "serviceaccounts",
-      "serviceentries",
       "services",
       "services/proxy",
       "statefulsets",
@@ -95,10 +92,6 @@ resource "kubernetes_role" "namespace-admin" {
       "horizontalpodautoscalers",
       "configmaps",
       "ingresses",
-      "policies",
-      "destinationrules",
-      "gateways",
-      "virtualservices",
       "elasticsearches",
       "kibanas",
       "roles",
@@ -109,6 +102,53 @@ resource "kubernetes_role" "namespace-admin" {
       "servicemonitors",
       "certificates",
       "issuers"
+    ]
+    verbs = [
+      "get",
+      "list",
+      "watch",
+      "create",
+      "update",
+      "patch",
+      "delete",
+      "edit",
+      "exec"
+    ]
+  }
+
+  # Read/write access for Istio networking
+  rule {
+    api_groups = [
+      "networking.istio.io",
+    ]
+    resources = [
+      "destinationrules",
+      "serviceentries",
+      "sidecars",
+      "virtualservices",
+    ]
+    verbs = [
+      "get",
+      "list",
+      "watch",
+      "create",
+      "update",
+      "patch",
+      "delete",
+      "edit",
+      "exec"
+    ]
+  }
+
+  # Read/write access for Istio security
+  rule {
+    api_groups = [
+      "security.istio.io",
+    ]
+    resources = [
+      "authorizationpolicies"
+      "peerauthentications",
+      "requestauthentications",
     ]
     verbs = [
       "get",
