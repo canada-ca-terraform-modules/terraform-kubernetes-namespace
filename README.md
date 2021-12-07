@@ -74,11 +74,15 @@ module "namespace_xxxxx" {
 
 ## History
 
-| Date     | Release    | Change                                                     |
-| -------- | ---------- | ---------------------------------------------------------- |
-| 20200123 | 1.0.0      | 1st release                                                |
-| 20200820 | 1.0.1      | Namespace admin RBAC udpates                               |
-| 20201009 | 2.0.0      | Updated module for Helm 3                                  |
-| 20201022 | 2.1.0      | Removed additional dashboard configuration                 |
-| 20201030 | 2.1.1      | Granted access to the ServiceEntry resource                |
-| 20201110 | 2.2.0      | Support customization of fluentd config                    |
+| Date     | Release    | Change                                      |
+| -------- | ---------- | ------------------------------------------- |
+| 20200123 | 1.0.0      | 1st release                                 |
+| 20200820 | 1.0.1      | Namespace admin RBAC udpates                |
+| 20201009 | 2.0.0      | Updated module for Helm 3                   |
+| 20201022 | 2.1.0      | Removed additional dashboard configuration  |
+| 20201030 | 2.1.1      | Granted access to the ServiceEntry resource |
+| 20201110 | 2.2.0      | Support customization of fluentd config     |
+| 20210225 | 2.2.1      | Update kubernetes provider                  |
+| 20211201 | 2.3.0      | Namespace admin RBAC rules for Argo         |
+| 20211207 | 2.4.0      | Namespace admin RBAC rules for CronJobber   |
+| 20211207 | 2.4.1      | Namespace admin RBAC updates for Istio 1.6  |
