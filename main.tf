@@ -153,6 +153,26 @@ resource "kubernetes_role" "namespace-admin" {
     ]
   }
 
+  # Read/write access for CronJobber
+  rule {
+    api_groups = [
+      "cronjobber.hidde.co"
+    ]
+    resources = [
+      "tzcronjobs",
+    ]
+    verbs = [
+      "get",
+      "list",
+      "watch",
+      "create",
+      "update",
+      "patch",
+      "delete",
+      "edit",
+    ]
+  }
+
   depends_on = [
     null_resource.dependency_getter,
   ]
