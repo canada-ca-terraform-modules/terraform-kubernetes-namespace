@@ -146,7 +146,7 @@ resource "kubernetes_role" "namespace-admin" {
       "security.istio.io",
     ]
     resources = [
-      "authorizationpolicies"
+      "authorizationpolicies",
       "peerauthentications",
       "requestauthentications",
     ]
