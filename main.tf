@@ -69,7 +69,6 @@ resource "kubernetes_role" "namespace-admin" {
       "nodes",
       "deployments",
       "deployments/scale",
-      "daemonsets",
       "cronjobs",
       "events",
       "jobs",
