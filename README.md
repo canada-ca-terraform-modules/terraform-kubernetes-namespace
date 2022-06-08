@@ -2,7 +2,12 @@
 
 ## Introduction
 
-This module deploys and configures Namespaces inside a Kubernetes Cluster.
+This module configures Namespaces inside a Kubernetes Cluster. In particular this namespace module does the following:
+- Creates a new role within the namespace called **namespace-admin** and binds the role to var.namespace_admins.users & var.namespace_admins.groups. The **namespace-admin** role grants read & write permission to most of the resources in the namespace. Only read permission is granted to the resource quotas and endpoints resources. Typically, an Azure Active Directory group will be assigned the namespace-admin role. 
+- Sets a resource quota within the namespace that limits the quantity of services.loadbalancers & services.nodeports in the namespace. This defaults to 0. 
+- A new secret is created. The secret stores information that can be used to pull an image from a container image repository. This information includes, the FQDN of the repository, a set of credentials used to access the repository, an service account's email address and an authorization code used as part of the image pull secret. For instance, this secret could specify the information needed to pull image from an artifactory repository. 
+- A service account is created so that CD pipelines can deploy to the kubernetes namespace. For instance, the service account can be used to deploy to an Octopus project from a Gitlab repository. The service account is assigned a couple roles. It is assigned two cluster roles, one called **cluster-user** and the other called **var.ci_name** (the value of the Terraform variable). Typically, the var.ci_name variable will be set to "octopus" (after the Octopus deployment tool). The service account is also binded to a role scoped at the namespace called namespace-admin (the role created earlier in the module).
+- Lastly, the module creates a new ConfigMap called **fluentd-config** within the namespace. The ConfigMap has a key called fluent.conf and its value is specified by the fluentd_config Terraform variable.   
 
 ## Security Controls
 
