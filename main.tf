@@ -48,13 +48,6 @@ resource "kubernetes_role" "namespace-admin" {
     verbs      = ["list", "get", "watch"]
   }
 
-  # read-only access to all resources in the aadpodidentity.k8s.io api group
-  rule {
-    api_groups = ["aadpodidentity.k8s.io"]
-    resources  = ["*"]
-    verbs      = ["list", "get", "watch"]
-  }
-
   # Read/write access to most resources in namespace
   rule {
     api_groups = [
@@ -217,6 +210,13 @@ resource "kubernetes_role" "namespace-admin" {
       "delete",
       "edit",
     ]
+  }
+
+  # read-only access to all resources in the aadpodidentity.k8s.io api group
+  rule {
+    api_groups = ["aadpodidentity.k8s.io"]
+    resources  = ["*"]
+    verbs      = ["list", "get", "watch"]
   }
 
   depends_on = [
