@@ -75,3 +75,13 @@ variable "fluentd_config" {
 </match>
 EOF
 }
+
+variable "allowed_hosts" {
+  type        = list(string)
+  default     = []
+  description = <<-EOF
+    A list of the hosts that are allowed by the restrict-hostnames policy to be used by ingress & VirtualService Kuberenetes resources in the namespace.
+    Path allowance is based on the path as a prefix, there if the value test.ca/baz is passed to the allowed_hosts variable, the /baz/foo and /bazfoobar 
+    would be permitted by the policy. A path of / should allow anything.
+  EOF
+}

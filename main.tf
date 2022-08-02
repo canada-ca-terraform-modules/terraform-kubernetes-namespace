@@ -395,3 +395,24 @@ resource "null_resource" "dependency_setter" {
 
   ]
 }
+
+locals {
+  hostsAndPathsMap = [for v in var.allowed_hosts : {
+    host = (length(regexall("/", v)) > 0) ? regex("^[^/]*", v) : v
+    path = (length(regexall("/", v)) > 0) ? regex("/.*", v) : ""
+  }]
+}
+
+resource "kubernetes_annotations" "allowed_hosts" {
+  count = length(var.allowed_hosts) == 0 ? 0 : 1
+
+  api_version = "v1"
+  kind        = "Namespace"
+  metadata {
+    name = var.name
+  }
+  annotations = {
+    "ingress.statcan.gc.ca/allowed-hosts" = jsonencode(local.hostsAndPathsMap)
+  }
+  force = true
+}
