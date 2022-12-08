@@ -56,8 +56,6 @@ module "namespace_xxxxx" {
   docker_password = var.docker_password
   docker_email = var.docker_email
   docker_auth = var.docker_auth
-
-  dependencies = []
 }
 ```
 
@@ -76,7 +74,10 @@ module "namespace_xxxxx" {
 | docker_email             | string  | yes      | The email for authenticating against the docker repo    |
 | docker_auth              | string  | yes      | The auth for authenticating against the docker repo     |
 | allowed_hosts            | list(string) | no  | A list of the hosts that are allowed by the restrict-hostnames policy to be used by ingress & VirtualService Kuberenetes resources in the namespace. Path allowance is based on the path as a prefix, there if the value test.ca/baz is passed to the allowed_hosts variable, the /baz/foo and /bazfoobar would be permitted by the policy. A path of / should allow anything.                                                             |
-| dependencies             | string  | yes      | Dependency name refering to namespace module            |
+| allowed_storage          | string  | no       | The sum of allowed storage requests across all PVCs in this namespace. (**default**: "0") |
+| allowed_loadbalancers    | number  | no       | The number of Services of type LoadBalancer which can be specified in the namespace. |
+| allowed_nodeports        | number  | no       | The number of NodePorts which can be specified in Services across the namespace. |
+| fluentd_config           | string  | no       | The configuration that is applied to the fluentd service|
 
 ## History
 
@@ -97,4 +98,5 @@ module "namespace_xxxxx" {
 | 202206-- | 2.5.0      | Added read access to aadpodidentity.k8s.io Custom Resources. |  
 | 202206-- | 2.5.1      | Update rule location for better plan delta  | 
 | 20220722 | 2.6.0      | Add allow_hosts annotation for restrict-hostname policy | 
+| 20221206 | 2.7.0      | Add resource quota for storage requests with a default of 0 |
 

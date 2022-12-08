@@ -1,26 +1,8 @@
-# Part of a hack for module-to-module dependencies.
-# https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607
-# and
-# https://github.com/hashicorp/terraform/issues/1178#issuecomment-473091030
-# Make sure to add this null_resource.dependency_getter to the `depends_on`
-# attribute to all resource(s) that will be constructed first within this
-# module:
-resource "null_resource" "dependency_getter" {
-  triggers = {
-    my_dependencies = join(",", var.dependencies)
-  }
-
-  lifecycle {
-    ignore_changes = [
-      triggers["my_dependencies"],
-    ]
-  }
-}
-
 resource "kubernetes_resource_quota" "service_quota" {
   metadata {
     name      = "service-quota"
     namespace = var.name
+    labels    = local.common_labels
   }
 
   spec {
@@ -29,16 +11,36 @@ resource "kubernetes_resource_quota" "service_quota" {
       "services.nodeports"     = var.allowed_nodeports
     }
   }
+}
 
-  depends_on = [
-    null_resource.dependency_getter,
-  ]
+# conflicting name introduced as intermediary step towards having storage quota across existing resources [CN-1457]
+# ref: https://gitlab.k8s.cloud.statcan.ca/cloudnative/terraform/modules/terraform-kubernetes-namespace/-/merge_requests/16#note_210914
+resource "kubernetes_resource_quota" "storage_quota" {
+  metadata {
+    name      = "limit-storage"
+    namespace = var.name
+    labels    = local.common_labels
+    annotations = {
+      "kubernetes.io/description" = <<-EOF
+      To limit additional costs to the cloud project, this policy is in place to 
+      prevent the use of more storage than is already in use. If you require additional storage, 
+      please obtain CIO (IT requests) or BRM (business requests) approval and submit a Cloud Jira to have the quota increased.
+      EOF
+    }
+  }
+
+  spec {
+    hard = {
+      "requests.storage" = var.allowed_storage
+    }
+  }
 }
 
 resource "kubernetes_role" "namespace-admin" {
   metadata {
     name      = "namespace-admin"
     namespace = var.name
+    labels    = local.common_labels
   }
 
   # Read-only access to resource quotas
@@ -218,16 +220,13 @@ resource "kubernetes_role" "namespace-admin" {
     resources  = ["*"]
     verbs      = ["list", "get", "watch"]
   }
-
-  depends_on = [
-    null_resource.dependency_getter,
-  ]
 }
 
 resource "kubernetes_role_binding" "namespace-admins" {
   metadata {
     name      = "namespace-admins"
     namespace = var.name
+    labels    = local.common_labels
   }
 
   role_ref {
@@ -255,10 +254,6 @@ resource "kubernetes_role_binding" "namespace-admins" {
       api_group = "rbac.authorization.k8s.io"
     }
   }
-
-  depends_on = [
-    null_resource.dependency_getter,
-  ]
 }
 
 # Secret
@@ -269,6 +264,7 @@ resource "kubernetes_secret" "secret_registry" {
   metadata {
     name      = var.kubernetes_secret
     namespace = var.name
+    labels    = local.common_labels
   }
 
   data = {
@@ -290,18 +286,16 @@ resource "kubernetes_service_account" "ci" {
   metadata {
     name      = var.ci_name
     namespace = var.name
+    labels    = local.common_labels
   }
 
   automount_service_account_token = false
-
-  depends_on = [
-    null_resource.dependency_getter,
-  ]
 }
 
 resource "kubernetes_cluster_role_binding" "ci-user" {
   metadata {
-    name = "cluster-user-ci-${var.name}"
+    name   = "cluster-user-ci-${var.name}"
+    labels = local.common_labels
   }
 
   role_ref {
@@ -315,16 +309,13 @@ resource "kubernetes_cluster_role_binding" "ci-user" {
     name      = kubernetes_service_account.ci.metadata.0.name
     namespace = kubernetes_service_account.ci.metadata.0.namespace
   }
-
-  depends_on = [
-    null_resource.dependency_getter,
-  ]
 }
 
 resource "kubernetes_role_binding" "namespace-admin-ci" {
   metadata {
     name      = "namespace-admin-${var.ci_name}"
     namespace = var.name
+    labels    = local.common_labels
   }
 
   role_ref {
@@ -344,15 +335,12 @@ resource "kubernetes_role_binding" "namespace-admin-ci" {
     name      = var.ci_name
     namespace = "ci"
   }
-
-  depends_on = [
-    null_resource.dependency_getter,
-  ]
 }
 
 resource "kubernetes_cluster_role_binding" "ci" {
   metadata {
-    name = "${var.ci_name}-${var.name}"
+    name   = "${var.ci_name}-${var.name}"
+    labels = local.common_labels
   }
 
   role_ref {
@@ -366,10 +354,6 @@ resource "kubernetes_cluster_role_binding" "ci" {
     name      = var.ci_name
     namespace = var.name
   }
-
-  depends_on = [
-    null_resource.dependency_getter,
-  ]
 }
 
 # Logging
@@ -378,22 +362,12 @@ resource "kubernetes_config_map" "fluentd-config" {
   metadata {
     name      = "fluentd-config"
     namespace = var.name
+    labels    = local.common_labels
   }
 
   data = {
     "fluent.conf" = var.fluentd_config
   }
-}
-
-# Part of a hack for module-to-module dependencies.
-# https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607
-resource "null_resource" "dependency_setter" {
-  # Part of a hack for module-to-module dependencies.
-  # https://github.com/hashicorp/terraform/issues/1178#issuecomment-449158607
-  # List resource(s) that will be constructed last within the module.
-  depends_on = [
-
-  ]
 }
 
 locals {
