@@ -40,7 +40,7 @@ variable "allowed_loadbalancers" {
   description = "The number of Services of type LoadBalancer which can be specified in the namespace."
   validation {
     condition     = var.allowed_loadbalancers >= 0
-    error_message = "The number of NodePorts cannot be less than 0."
+    error_message = "The number of LoadBalancers cannot be less than 0."
   }
 }
 

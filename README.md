@@ -99,4 +99,5 @@ module "namespace_xxxxx" {
 | 202206-- | 2.5.1      | Update rule location for better plan delta  | 
 | 20220722 | 2.6.0      | Add allow_hosts annotation for restrict-hostname policy | 
 | 20221206 | 2.7.0      | Add resource quota for storage requests with a default of 0 |
+| 20221212 | 2.7.1      | Fixed incorrect variable validation error_message for `allowed_loadbalancers` |
 
