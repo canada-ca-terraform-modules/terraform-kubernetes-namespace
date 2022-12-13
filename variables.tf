@@ -28,10 +28,6 @@ variable "allowed_storage" {
   nullable    = false
   default     = "0"
   description = "The sum of allowed storage requests across all PVCs in this namespace."
-  validation {
-    condition     = length(regexall("^-.*", var.allowed_storage)) > 0
-    error_message = "The sum of allowed storage requests cannot be less than 0."
-  }
 }
 
 variable "allowed_loadbalancers" {
