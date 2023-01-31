@@ -101,3 +101,4 @@ module "namespace_xxxxx" {
 | 20221206 | 2.7.0   | Add resource quota for storage requests with a default of 0  |
 | 20221212 | 2.7.1   | Removed uneeded validation and updated error messages        |
 | 20221230 | 2.7.2   | Re-added some validation with correct success condition      |
+| 20221230 | 2.8.0   | Allow access to ephemeral containers.                        |

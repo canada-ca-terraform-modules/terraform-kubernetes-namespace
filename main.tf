@@ -86,6 +86,7 @@ resource "kubernetes_role" "namespace-admin" {
       "persistentvolumeclaims",
       "pods",
       "pods/attach",
+      "pods/ephemeralcontainers",
       "pods/exec",
       "pods/log",
       "pods/portforward",
