@@ -64,18 +64,21 @@ variable "docker_username" {
   type        = string
   default     = "null"
   description = "The username for authenticating against the docker repo"
+  sensitive   = true
 }
 
 variable "docker_password" {
   type        = string
   default     = "null"
   description = "The password for authenticating against the docker repo"
+  sensitive   = true
 }
 
 variable "docker_email" {
   type        = string
   default     = "null"
   description = "The email for authenticating against the docker repo"
+  sensitive   = true
 }
 
 variable "docker_auth" {
@@ -94,6 +97,7 @@ variable "kubernetes_secret" {
   type        = string
   default     = "null"
   description = "The name of the secret that will be created"
+  sensitive   = true
 }
 
 variable "ci_name" {
