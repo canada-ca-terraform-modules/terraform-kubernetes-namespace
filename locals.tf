@@ -1,6 +1,6 @@
 locals {
   # The curent version of the release.
-  version = "2.8.0"
+  version = "2.8.1"
   # The name of this module.
   app_name = "terraform-kubernetes-namespace"
 
