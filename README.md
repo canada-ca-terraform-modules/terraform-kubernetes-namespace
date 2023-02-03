@@ -102,3 +102,4 @@ module "namespace_xxxxx" {
 | 20221212 | 2.7.1   | Removed uneeded validation and updated error messages        |
 | 20221230 | 2.7.2   | Re-added some validation with correct success condition      |
 | 20221230 | 2.8.0   | Allow access to ephemeral containers.                        |
+| 20220203 | 2.8.1   | Specify sensitive variables.                                 |
