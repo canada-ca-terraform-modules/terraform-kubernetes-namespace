@@ -22,8 +22,8 @@ resource "kubernetes_resource_quota" "storage_quota" {
     labels    = local.common_labels
     annotations = {
       "kubernetes.io/description" = <<-EOF
-      To limit additional costs to the cloud project, this policy is in place to 
-      prevent the use of more storage than is already in use. If you require additional storage, 
+      To limit additional costs to the cloud project, this policy is in place to
+      prevent the use of more storage than is already in use. If you require additional storage,
       please obtain CIO (IT requests) or BRM (business requests) approval and submit a Cloud Jira to have the quota increased.
       EOF
     }
@@ -220,6 +220,26 @@ resource "kubernetes_role" "namespace-admin" {
     api_groups = ["aadpodidentity.k8s.io"]
     resources  = ["*"]
     verbs      = ["list", "get", "watch"]
+  }
+
+  # Read/write access for Solr
+  rule {
+    api_groups = [
+      "solr.apache.org"
+    ]
+    resources = [
+      "solrclouds",
+    ]
+    verbs = [
+      "get",
+      "list",
+      "watch",
+      "create",
+      "update",
+      "patch",
+      "delete",
+      "edit"
+    ]
   }
 }
 
