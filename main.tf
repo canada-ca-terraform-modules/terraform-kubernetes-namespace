@@ -118,6 +118,23 @@ resource "kubernetes_role" "namespace-admin" {
     ]
   }
 
+  # Read access for Trivy Scan Reports
+  rule {
+    api_groups = [
+      "aquasecurity.github.io",
+    ]
+    resources = [
+      "configauditreports",
+      "exposedsecretreports",
+      "vulnerabilityreports",
+    ]
+    verbs = [
+      "get",
+      "list",
+      "watch",
+    ]
+  }
+
   # Read/write access for Istio networking
   rule {
     api_groups = [
