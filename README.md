@@ -104,3 +104,4 @@ module "namespace_xxxxx" {
 | 20221230 | 2.8.0   | Allow access to ephemeral containers.                        |
 | 20220203 | 2.8.1   | Specify sensitive variables.                                 |
 | 20230321 | 2.9.0   | Add SolrCloud RBAC.                                          |
+| 20230322 | 2.10.0  | Add read access to aquasecurity.github.io Custom Resources.  |
