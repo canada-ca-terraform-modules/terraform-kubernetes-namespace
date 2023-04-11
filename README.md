@@ -1,6 +1,6 @@
-# Terraform Kubernetes Namespace
+[(Français)](#le-nom-du-projet)
 
-## Introduction
+## Terraform Kubernetes Namespace
 
 This module configures Namespaces inside a Kubernetes Cluster. In particular this namespace module does the following:
 - Creates a new role within the namespace called **namespace-admin** and binds the role to var.namespace_admins.users & var.namespace_admins.groups. The **namespace-admin** role grants read & write permission to most of the resources in the namespace. Only read permission is granted to the resource quotas and endpoints resources. Typically, an Azure Active Directory group will be assigned the namespace-admin role.
@@ -8,6 +8,17 @@ This module configures Namespaces inside a Kubernetes Cluster. In particular thi
 - A new secret is created. The secret stores information that can be used to pull an image from a container image repository. This information includes, the FQDN of the repository, a set of credentials used to access the repository, an service account's email address and an authorization code used as part of the image pull secret. For instance, this secret could specify the information needed to pull image from an artifactory repository.
 - A service account is created so that CD pipelines can deploy to the kubernetes namespace. For instance, the service account can be used to deploy to an Octopus project from a Gitlab repository. The service account is assigned a couple roles. It is assigned two cluster roles, one called **cluster-user** and the other called **var.ci_name** (the value of the Terraform variable). Typically, the var.ci_name variable will be set to "octopus" (after the Octopus deployment tool). The service account is also binded to a role scoped at the namespace called namespace-admin (the role created earlier in the module).
 - Lastly, the module creates a new ConfigMap called **fluentd-config** within the namespace. The ConfigMap has a key called fluent.conf and its value is specified by the fluentd_config Terraform variable.
+
+### How to Contribute
+
+See [CONTRIBUTING.md](CONTRIBUTING.md)
+
+### License
+
+Unless otherwise noted, the source code of this project is covered under Crown Copyright, Government of Canada, and is distributed under the [MIT License](LICENSE).
+
+The Canada wordmark and related graphics associated with this distribution are protected under trademark law and copyright law. No permission is granted to use them outside the parameters of the Government of Canada's corporate identity program. For more information, see [Federal identity requirements](https://www.canada.ca/en/treasury-board-secretariat/topics/government-communications/federal-identity-requirements.html).
+
 
 ## Security Controls
 
@@ -79,7 +90,20 @@ module "namespace_xxxxx" {
 | allowed_nodeports        | number       | no       | The number of NodePorts which can be specified in Services across the namespace.                                                                                                                                                                                                                                                                                               |
 | fluentd_config           | string       | no       | The configuration that is applied to the fluentd service                                                                                                                                                                                                                                                                                                                       |
 
-## History
+## Terraform Kubernetes Namespace
+
+### Comment contribuer
+
+Voir [CONTRIBUTING.md](CONTRIBUTING.md)
+
+### Licence
+
+Sauf indication contraire, le code source de ce projet est protégé par le droit d'auteur de la Couronne du gouvernement du Canada et distribué sous la [licence MIT](LICENSE).
+
+Le mot-symbole « Canada » et les éléments graphiques connexes liés à cette distribution sont protégés en vertu des lois portant sur les marques de commerce et le droit d'auteur. Aucune autorisation n'est accordée pour leur utilisation à l'extérieur des paramètres du programme de coordination de l'image de marque du gouvernement du Canada. Pour obtenir davantage de renseignements à ce sujet, veuillez consulter les [Exigences pour l'image de marque](https://www.canada.ca/fr/secretariat-conseil-tresor/sujets/communications-gouvernementales/exigences-image-marque.html).
+
+
+# History
 
 | Date     | Release | Change                                                       |
 | -------- | ------- | ------------------------------------------------------------ |
@@ -105,3 +129,4 @@ module "namespace_xxxxx" {
 | 20220203 | 2.8.1   | Specify sensitive variables.                                 |
 | 20230321 | 2.9.0   | Add SolrCloud RBAC.                                          |
 | 20230322 | 2.10.0  | Add read access to aquasecurity.github.io Custom Resources.  |
+| 20230411 | 2.10.1 | Update OSS documentation to align with OSS standards defined in [oss-templates](https://github.com/StatCan/oss-templates). |
