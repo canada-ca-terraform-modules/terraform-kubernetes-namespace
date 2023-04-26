@@ -330,6 +330,30 @@ resource "kubernetes_service_account" "ci" {
   automount_service_account_token = false
 }
 
+# This creates a secret containing a token linked to a service account.
+# In k8s 1.24, a token is no longer automatically generated, as such, this will only generate the token if
+# a token isn't already generated.
+#
+# Note: It is not mounted into the list of secrets to the related service account for two reasons:
+#         1. It would cause a dependency loop in Terraform.
+#         2. Since this is a token meant to be used for external access to the cluster and having such high access,
+#            removing the ability for the token to be mounted at runtime is safer since this token has an indefinite lifetime.
+resource "kubernetes_secret_v1" "ci" {
+
+  metadata {
+    annotations = {
+      "kubernetes.io/service-account.name" = kubernetes_service_account.ci.metadata[0].name
+      "kubernetes.io/description"          = "The long-lived token for the ${kubernetes_service_account.ci.metadata[0].name} service account."
+    }
+    labels = local.common_labels
+
+    name      = join("-", [kubernetes_service_account.ci.metadata[0].name, "token"])
+    namespace = kubernetes_service_account.ci.metadata[0].namespace
+  }
+
+  type = "kubernetes.io/service-account-token"
+}
+
 resource "kubernetes_cluster_role_binding" "ci-user" {
   metadata {
     name   = "cluster-user-ci-${var.name}"
