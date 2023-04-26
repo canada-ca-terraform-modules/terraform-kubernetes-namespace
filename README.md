@@ -105,28 +105,29 @@ Le mot-symbole « Canada » et les éléments graphiques connexes liés à cette
 
 # History
 
-| Date     | Release | Change                                                       |
-| -------- | ------- | ------------------------------------------------------------ |
-| 20200123 | 1.0.0   | 1st release                                                  |
-| 20200820 | 1.0.1   | Namespace admin RBAC udpates                                 |
-| 20201009 | 2.0.0   | Updated module for Helm 3                                    |
-| 20201022 | 2.1.0   | Removed additional dashboard configuration                   |
-| 20201030 | 2.1.1   | Granted access to the ServiceEntry resource                  |
-| 20201110 | 2.2.0   | Support customization of fluentd config                      |
-| 20210225 | 2.2.1   | Update kubernetes provider                                   |
-| 20211201 | 2.3.0   | Namespace admin RBAC rules for Argo                          |
-| 20211207 | 2.4.0   | Namespace admin RBAC rules for CronJobber                    |
-| 20211207 | 2.4.1   | Namespace admin RBAC updates for Istio 1.6                   |
-| 202112-- | 2.4.2   | Fix RBAC                                                     |
-| 202203-- | 2.4.3   | Remove DaemonSets from NamespaceAdmin role                   |
-| 202206-- | 2.5.0   | Added read access to aadpodidentity.k8s.io Custom Resources. |
-| 202206-- | 2.5.1   | Update rule location for better plan delta                   |
-| 20220722 | 2.6.0   | Add allow_hosts annotation for restrict-hostname policy      |
-| 20221206 | 2.7.0   | Add resource quota for storage requests with a default of 0  |
-| 20221212 | 2.7.1   | Removed uneeded validation and updated error messages        |
-| 20221230 | 2.7.2   | Re-added some validation with correct success condition      |
-| 20221230 | 2.8.0   | Allow access to ephemeral containers.                        |
-| 20220203 | 2.8.1   | Specify sensitive variables.                                 |
-| 20230321 | 2.9.0   | Add SolrCloud RBAC.                                          |
-| 20230322 | 2.10.0  | Add read access to aquasecurity.github.io Custom Resources.  |
-| 20230411 | 2.10.1 | Update OSS documentation to align with OSS standards defined in [oss-templates](https://github.com/StatCan/oss-templates). |
+| Date     | Release | Change                                                                                                                     |
+| -------- | ------- | -------------------------------------------------------------------------------------------------------------------------- |
+| 20200123 | 1.0.0   | 1st release                                                                                                                |
+| 20200820 | 1.0.1   | Namespace admin RBAC udpates                                                                                               |
+| 20201009 | 2.0.0   | Updated module for Helm 3                                                                                                  |
+| 20201022 | 2.1.0   | Removed additional dashboard configuration                                                                                 |
+| 20201030 | 2.1.1   | Granted access to the ServiceEntry resource                                                                                |
+| 20201110 | 2.2.0   | Support customization of fluentd config                                                                                    |
+| 20210225 | 2.2.1   | Update kubernetes provider                                                                                                 |
+| 20211201 | 2.3.0   | Namespace admin RBAC rules for Argo                                                                                        |
+| 20211207 | 2.4.0   | Namespace admin RBAC rules for CronJobber                                                                                  |
+| 20211207 | 2.4.1   | Namespace admin RBAC updates for Istio 1.6                                                                                 |
+| 202112-- | 2.4.2   | Fix RBAC                                                                                                                   |
+| 202203-- | 2.4.3   | Remove DaemonSets from NamespaceAdmin role                                                                                 |
+| 202206-- | 2.5.0   | Added read access to aadpodidentity.k8s.io Custom Resources.                                                               |
+| 202206-- | 2.5.1   | Update rule location for better plan delta                                                                                 |
+| 20220722 | 2.6.0   | Add allow_hosts annotation for restrict-hostname policy                                                                    |
+| 20221206 | 2.7.0   | Add resource quota for storage requests with a default of 0                                                                |
+| 20221212 | 2.7.1   | Removed uneeded validation and updated error messages                                                                      |
+| 20221230 | 2.7.2   | Re-added some validation with correct success condition                                                                    |
+| 20221230 | 2.8.0   | Allow access to ephemeral containers.                                                                                      |
+| 20220203 | 2.8.1   | Specify sensitive variables.                                                                                               |
+| 20230321 | 2.9.0   | Add SolrCloud RBAC.                                                                                                        |
+| 20230322 | 2.10.0  | Add read access to aquasecurity.github.io Custom Resources.                                                                |
+| 20230411 | 2.10.1  | Update OSS documentation to align with OSS standards defined in [oss-templates](https://github.com/StatCan/oss-templates). |
+| 20230426 | 2.10.2  | Explicit creation of a long-live token for the service account                                                             |

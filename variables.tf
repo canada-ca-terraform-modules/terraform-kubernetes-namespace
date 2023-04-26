@@ -121,7 +121,7 @@ variable "allowed_hosts" {
   default     = []
   description = <<-EOF
     A list of the hosts that are allowed by the restrict-hostnames policy to be used by ingress & VirtualService Kuberenetes resources in the namespace.
-    Path allowance is based on the path as a prefix, there if the value test.ca/baz is passed to the allowed_hosts variable, the /baz/foo and /bazfoobar 
+    Path allowance is based on the path as a prefix, there if the value test.ca/baz is passed to the allowed_hosts variable, the /baz/foo and /bazfoobar
     would be permitted by the policy. A path of / should allow anything.
   EOF
 }
