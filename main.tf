@@ -391,12 +391,6 @@ resource "kubernetes_role_binding" "namespace-admin-ci" {
     name      = kubernetes_service_account.ci.metadata.0.name
     namespace = kubernetes_service_account.ci.metadata.0.namespace
   }
-
-  subject {
-    kind      = "ServiceAccount"
-    name      = var.ci_name
-    namespace = "ci"
-  }
 }
 
 resource "kubernetes_cluster_role_binding" "ci" {

@@ -130,4 +130,5 @@ Le mot-symbole « Canada » et les éléments graphiques connexes liés à cette
 | 20230321 | 2.9.0   | Add SolrCloud RBAC.                                                                                                        |
 | 20230322 | 2.10.0  | Add read access to aquasecurity.github.io Custom Resources.                                                                |
 | 20230411 | 2.10.1  | Update OSS documentation to align with OSS standards defined in [oss-templates](https://github.com/StatCan/oss-templates). |
-| 20230426 | 2.10.2  | Explicit creation of a long-live token for the service account                                                             |
+| 20230426 | 2.10.2  | Explicit creation of a long-lived token for the service account                                                            |
+| 20230426 | 2.10.3  | Remove binding to SA in the ci namespace                                                                                   |
